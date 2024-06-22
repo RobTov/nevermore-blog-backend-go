@@ -4,9 +4,8 @@ import "time"
 
 type UserStore interface {
 	GetUsers() ([]User, error)
-	GetUserByEmail(email string) (User, error)
-	GetUserByID(id uint) (User, error)
-	CreateUser(User) error
+	GetUserByEmail(email string) (*User, error)
+	GetUserByID(id uint) (*User, error)
 	UpdateUser(User) error
 	DeleteUser(User) error
 }

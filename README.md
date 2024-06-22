@@ -2,17 +2,17 @@
 
 
 1. Build 
-```make
+```makefile
 make buid
 ```
 
 2. Run 
-```make
+```makefile
 make run
  ```
 
 3. Test 
-```make
+```makefile
 make test
  ```
 
