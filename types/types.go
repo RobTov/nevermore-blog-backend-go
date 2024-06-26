@@ -6,6 +6,7 @@ type UserStore interface {
 	GetUsers() ([]User, error)
 	GetUserByEmail(email string) (*User, error)
 	GetUserByID(id uint) (*User, error)
+	CreateUser(User) error
 	UpdateUser(User) error
 	DeleteUser(User) error
 }
@@ -35,4 +36,24 @@ type Post struct {
 	Image            string    `json:"image"`
 	UserID           string    `json:"user_id"`
 	CreatedAt        time.Time `json:"created_at"`
+}
+
+type LoginUserPayload struct {
+	Email    string `json:"email" validate:"required, email"`
+	Password string `json:"password" validate:"required"`
+}
+
+type RegisterUserPayload struct {
+	Username string `json:"username" validate:"required, min=3"`
+	Email    string `json:"email" validate:"required, email"`
+	Avatar   string `json:"avatar" validate:"required"`
+	Password string `json:"password" validate:"required,min=3,max=30"`
+}
+
+type UpdateUserPayload struct {
+	ID       uint   `json:"id" validate:"required"`
+	Username string `json:"username" validate:"required, min=3"`
+	Email    string `json:"email" validate:"required, email"`
+	Avatar   string `json:"avatar" validate:"required"`
+	Password string `json:"password" validate:"required,min=3,max=30"`
 }
