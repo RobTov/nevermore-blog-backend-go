@@ -34,26 +34,33 @@ type Post struct {
 	ShortDescription string    `json:"short_description"`
 	Body             string    `json:"body"`
 	Image            string    `json:"image"`
-	UserID           string    `json:"user_id"`
+	UserID           uint      `json:"user_id"`
 	CreatedAt        time.Time `json:"created_at"`
 }
 
 type LoginUserPayload struct {
-	Email    string `json:"email" validate:"required, email"`
+	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required"`
 }
 
 type RegisterUserPayload struct {
-	Username string `json:"username" validate:"required, min=3"`
-	Email    string `json:"email" validate:"required, email"`
+	Username string `json:"username" validate:"required,min=3"`
+	Email    string `json:"email" validate:"required,email"`
 	Avatar   string `json:"avatar" validate:"required"`
 	Password string `json:"password" validate:"required,min=3,max=30"`
 }
 
 type UpdateUserPayload struct {
 	ID       uint   `json:"id" validate:"required"`
-	Username string `json:"username" validate:"required, min=3"`
-	Email    string `json:"email" validate:"required, email"`
+	Username string `json:"username" validate:"required,min=3"`
+	Email    string `json:"email" validate:"required,email"`
 	Avatar   string `json:"avatar" validate:"required"`
 	Password string `json:"password" validate:"required,min=3,max=30"`
+}
+
+type PostCreateAndUpdatePayload struct {
+	Title            string `json:"title" validate:"required,min=2,max=100"`
+	ShortDescription string `json:"short_description" validate:"required,min=2,max=100"`
+	Body             string `json:"body" validate:"required"`
+	Image            string `json:"image" validate:"required"`
 }

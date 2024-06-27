@@ -99,7 +99,7 @@ func (s *Store) GetUserByID(id uint) (*types.User, error) {
 
 func (s *Store) CreateUser(user types.User) error {
 	_, err := s.db.Exec(
-		"INSERT INTO users (username, email, avatar, password) VALUES ($1, $2, $3, $4)",
+		"INSERT INTO users (username, email, avatar, password) VALUES ($1, $2, $3, $4);",
 		user.Username,
 		user.Email,
 		user.Avatar,

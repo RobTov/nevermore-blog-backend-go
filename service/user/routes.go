@@ -3,6 +3,7 @@ package user
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/RobTov/hmblog-golang-backend/config"
 	"github.com/RobTov/hmblog-golang-backend/service/auth"
@@ -25,7 +26,7 @@ func (h *Handler) RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/login", h.handleLogin).Methods(http.MethodPost)
 	router.HandleFunc("/register", h.handleRegister).Methods(http.MethodPost)
 	router.HandleFunc("/user/{id}", h.handleUpdateUser).Methods(http.MethodPut)
-	router.HandleFunc("/user/{id}", func(w http.ResponseWriter, r *http.Request) {}).Methods(http.MethodDelete)
+	router.HandleFunc("/user/{id}", h.handleDeleteUser).Methods(http.MethodDelete)
 }
 
 func (h *Handler) handleGetUsers(w http.ResponseWriter, r *http.Request) {
@@ -137,6 +138,28 @@ func (h *Handler) handleUpdateUser(w http.ResponseWriter, r *http.Request) {
 		Email:    payload.Email,
 		Avatar:   payload.Avatar,
 		Password: hashedPassword,
+	})
+
+	if err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	utils.WriteJSON(w, http.StatusOK, nil)
+}
+
+func (h *Handler) handleDeleteUser(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, ok := vars["id"]
+	if !ok {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("missing id on the request"))
+		return
+	}
+
+	userID, _ := strconv.Atoi(id)
+
+	err := h.store.DeleteUser(types.User{
+		ID: uint(userID),
 	})
 
 	if err != nil {
